@@ -205,6 +205,8 @@ class ModelConverter(object):
             self._add_relationship_kwargs(kwargs, prop)
         if getattr(prop, "doc", None):  # Useful for documentation generation
             kwargs["description"] = prop.doc
+        if getattr(prop, "key", None):  # Prop bound to model
+            kwargs["attribute"] = prop.key
         info = getattr(prop, "info", dict())
         overrides = info.get("marshmallow")
         if overrides is not None:

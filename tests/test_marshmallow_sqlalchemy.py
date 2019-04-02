@@ -405,6 +405,11 @@ class TestModelFieldConversion:
         assert validator.max == 1000
         assert field.required
 
+    def test_sets_attribute(self, models):
+        fields_ = fields_for_model(models.Course)
+        field = fields_["description"]
+        assert field.attribute == "description"
+
 
 def make_property(*column_args, **column_kwargs):
     return column_property(sa.Column(*column_args, **column_kwargs))
@@ -598,6 +603,13 @@ class TestFieldFor:
 
         field = field_for(models.Student, "full_name", validate=[])
         assert field.validators == []
+
+    def test_field_for_default_attribute(self, models):
+        field = field_for(models.Student, "full_name")
+        assert field.attribute == "full_name"
+
+        field = field_for(models.Student, "full_name", attribute="name")
+        assert field.attribute == "name"
 
 
 class TestTableSchema:
